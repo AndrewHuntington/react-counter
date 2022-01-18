@@ -38,7 +38,9 @@ function App() {
           </button>
         </div>
         <div className="reset-btn-wrapper">
-          <button className="reset-btn">RESET</button>
+          <button className="reset-btn" onClick={() => setSeconds(0)}>
+            RESET
+          </button>
         </div>
       </div>
     </div>

@@ -1,0 +1,3 @@
+{
+  "no-unnecessary-act": ["error", { "isStrict": false }]
+}
