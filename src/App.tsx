@@ -15,33 +15,38 @@ function App() {
   }, [isRunning]);
 
   return (
-    <div className="App">
-      <div className="counter-display">
-        <h1 className="counter" role="timer">
+    <div className="text-center">
+      <div className="">
+        <h1 className="text-8xl" role="timer">
           {seconds}
         </h1>
       </div>
-      <div className="buttons">
-        <div className="start-btn-wrapper bottom-margin">
-          <button className="start-btn" onClick={() => setIsRunning(true)}>
-            START
-          </button>
-        </div>
-        <div className="pause-btn-wrapper bottom-margin">
-          <button
-            className="pause-btn"
-            onClick={() => {
-              setIsRunning(!isRunning);
-            }}
-          >
-            PAUSE
-          </button>
-        </div>
-        <div className="reset-btn-wrapper">
-          <button className="reset-btn" onClick={() => setSeconds(0)}>
-            RESET
-          </button>
-        </div>
+      <div className="">
+        <button
+          data-testid="start-btn"
+          className="mr-5"
+          onClick={() => setIsRunning(true)}
+        >
+          <i className="fa-solid fa-play fa-2x"></i>
+        </button>
+
+        <button
+          data-testid="pause-btn"
+          className="mr-5"
+          onClick={() => {
+            setIsRunning(!isRunning);
+          }}
+        >
+          <i className="fa-solid fa-pause fa-2x"></i>
+        </button>
+
+        <button
+          data-testid="reset-btn"
+          className="reset-btn"
+          onClick={() => setSeconds(0)}
+        >
+          <i className="fa-solid fa-power-off fa-2x"></i>
+        </button>
       </div>
     </div>
   );

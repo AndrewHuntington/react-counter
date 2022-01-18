@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 import { act } from 'react-dom/test-utils';
-import { isJSDocUnknownTag } from 'typescript';
 
 test('timer begins at 0', () => {
   render(<App />);
@@ -12,26 +11,26 @@ test('timer begins at 0', () => {
 
 test('renders start button', () => {
   render(<App />);
-  const startBtn = screen.getByText(/start/i);
+  const startBtn = screen.getByTestId('start-btn');
   expect(startBtn).toBeInTheDocument();
 });
 
 test('renders pause button', () => {
   render(<App />);
-  const pauseBtn = screen.getByText(/pause/i);
+  const pauseBtn = screen.getByTestId('pause-btn');
   expect(pauseBtn).toBeInTheDocument();
 });
 
 test('renders reset button', () => {
   render(<App />);
-  const resetBtn = screen.getByText(/reset/i);
+  const resetBtn = screen.getByTestId('reset-btn');
   expect(resetBtn).toBeInTheDocument();
 });
 
 test('counter begins on start press', async () => {
   jest.useFakeTimers();
   render(<App />);
-  const startBtn = screen.getByText(/start/i);
+  const startBtn = screen.getByTestId('start-btn');
   fireEvent.click(startBtn);
 
   act(() => {
@@ -44,7 +43,7 @@ test('counter begins on start press', async () => {
 test('pause button pauses count', async () => {
   jest.useFakeTimers();
   render(<App />);
-  const pauseBtn = screen.getByText(/pause/i);
+  const pauseBtn = screen.getByTestId('pause-btn');
   fireEvent.click(pauseBtn);
 
   act(() => {
@@ -57,7 +56,7 @@ test('pause button pauses count', async () => {
 
 test('reset button sets counter to 0', async () => {
   render(<App />);
-  const resetBtn = screen.getByText(/reset/i);
+  const resetBtn = screen.getByTestId('reset-btn');
   fireEvent.click(resetBtn);
   const counter = await waitFor(() => screen.findByRole('timer'));
   expect(counter).toHaveTextContent('0');
