@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 import { act } from 'react-dom/test-utils';
+import { isJSDocUnknownTag } from 'typescript';
 
 test('timer begins at 0', () => {
   render(<App />);
@@ -28,17 +29,36 @@ test('renders reset button', () => {
 });
 
 test('counter begins on start press', async () => {
-  // ESLint doesn't like act being here, but it solves Jest errors
-  // Not sure where to put it
-  // Solution: turned no-unnecessary-act strict mode off
-  await act(async () => {
-    render(<App />);
-    const startBtn = screen.getByText(/start/i);
-    fireEvent.click(startBtn);
+  jest.useFakeTimers();
+  render(<App />);
+  const startBtn = screen.getByText(/start/i);
+  fireEvent.click(startBtn);
 
-    // Just sets a timer to wait for 1.5 seconds
-    await new Promise((res) => setTimeout(() => res('done'), 1500));
-    const counter = await waitFor(() => screen.findByRole('timer'));
-    expect(counter).toHaveTextContent('1');
+  act(() => {
+    jest.advanceTimersByTime(1500);
   });
+  const counter = await waitFor(() => screen.findByRole('timer'));
+  expect(counter).toHaveTextContent('1');
+});
+
+test('pause button pauses count', async () => {
+  jest.useFakeTimers();
+  render(<App />);
+  const pauseBtn = screen.getByText(/pause/i);
+  fireEvent.click(pauseBtn);
+
+  act(() => {
+    jest.advanceTimersByTime(2500);
+  });
+
+  const counter = await waitFor(() => screen.findByRole('timer'));
+  expect(counter).toHaveTextContent('2');
+});
+
+test('reset button sets counter to 0', async () => {
+  render(<App />);
+  const resetBtn = screen.getByText(/reset/i);
+  fireEvent.click(resetBtn);
+  const counter = await waitFor(() => screen.findByRole('timer'));
+  expect(counter).toHaveTextContent('0');
 });
